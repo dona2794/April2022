@@ -1,54 +1,18 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
+using VSApril2022.Utilities;
 
-namespace VSApril2022
+namespace VSApril2022.Pages
 {
-    internal class Program
+    internal class TMPage
     {
-        static void Main(string[] args)
+        public void CreateTM(IWebDriver driver)
         {
-            // open chrome browser
-            IWebDriver driver = new ChromeDriver();
-            driver.Manage().Window.Maximize();
-            
-            // launch Turnup portal
-            driver.Navigate().GoToUrl("http://horse.industryconnect.io/Account/Login?ReturnUrl=%2f");
-
-            // identify username textbox and enter valid username
-            IWebElement usernameTextbox = driver.FindElement(By.Id("UserName"));
-            usernameTextbox.SendKeys("Hari");
-
-            // identify password textbox and enter valid password
-            IWebElement passwordTextbox = driver.FindElement(By.Id("Password"));
-            passwordTextbox.SendKeys("123123");
-
-            // click on login button
-            IWebElement loginButton = driver.FindElement(By.XPath("//*[@id='loginForm']/form/div[3]/input[1]"));
-            loginButton.Click();
-
-            // check if user is logged in successfully
-            IWebElement helloHari = driver.FindElement(By.XPath("//*[@id='logoutForm']/ul/li/a"));  
-
-            if(helloHari.Text == "Hello hari!")
-            {
-                Console.WriteLine("Logged in successfully.Test passed");
-            }
-            else
-            {
-                Console.WriteLine("Test failed.");
-            }
-
-            // Click on Administration Menu list
-            IWebElement administrationList = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));
-            administrationList.Click();
-            Thread.Sleep(1000);
-
-            // Select Material and Time from the list
-            IWebElement timeMaterialButton = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a"));
-            timeMaterialButton.Click();
-            Thread.Sleep(1000);
 
             // Click on Create New button
             IWebElement createNewButton = driver.FindElement(By.XPath("//*[@id='container']/p/a"));
@@ -85,12 +49,13 @@ namespace VSApril2022
             // Click on save button
             IWebElement saveButton = driver.FindElement(By.Id("SaveButton"));
             saveButton.Click();
-            Thread.Sleep(10000);
+            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[4]/a[4]/span", 5);
 
-            // Click on go to last page button
+
+            // Click on to go to last page button
             IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/a[4]/span"));
             goToLastPageButton.Click();
-            Thread.Sleep(10000);
+            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]", 5);
 
             //Check if record create is present in the table and has expected value.
             IWebElement actualCode = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
@@ -103,8 +68,14 @@ namespace VSApril2022
             {
                 Console.WriteLine("Test failed.");
             }
+        }
+        public void EditTM(IWebDriver driver) 
+        { 
 
-            driver.Quit();
+        }
+        public void DeleteTM(IWebDriver driver)
+        {
+
         }
     }
 }
