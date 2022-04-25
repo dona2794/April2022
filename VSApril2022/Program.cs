@@ -88,9 +88,9 @@ namespace VSApril2022
             Thread.Sleep(10000);
 
             // Click on go to last page button
-            IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/ul/li[1]/span"));
+            IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/a[4]/span"));
             goToLastPageButton.Click();
-            Thread.Sleep(50000);
+            Thread.Sleep(10000);
 
             //Check if record create is present in the table and has expected value.
             IWebElement actualCode = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
