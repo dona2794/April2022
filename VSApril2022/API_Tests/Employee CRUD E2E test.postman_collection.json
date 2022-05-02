@@ -1,0 +1,200 @@
+{
+	"info": {
+		"_postman_id": "6041e4ff-b8cc-4609-b942-f693587b7dc7",
+		"name": "Employee CRUD E2E test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create new record in database",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Assertion 1 - Status code check\r",
+							"pm.test(\"Status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Assertion 2 - Response value check\r",
+							"/*pm.test(\" Check if the response contains the expected name\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Dona\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\" Check if the response contains the expected salary\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"100000\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\" Check if the response contains the expected age\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"20\");\r",
+							"});*/\r",
+							"\r",
+							"\r",
+							"pm.test(\"Check key-value pairs in the response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    //name check\r",
+							"    pm.expect(jsonData.data.name).to.eql(\"Dona\");\r",
+							"\r",
+							"    //Salary check\r",
+							"    pm.expect(jsonData.data.salary).to.eql(\"100000\");\r",
+							"\r",
+							"    //age check\r",
+							"     pm.expect(jsonData.data.age).to.eql(\"30\");\r",
+							"});\r",
+							"\r",
+							"//Assertion 3 - Setting an environment variable\r",
+							"pm.test(\"Set employee ID as an environment variable\", function () {\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.environment.set(\"employeeID\", jsonData.data.id);\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Dona\",\r\n    \"salary\": \"100000\",\r\n    \"age\": \"30\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/create",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update an employee record",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Assertion 1 - Status code check\r",
+							"pm.test(\"Status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//Assertion 2 - Value check\r",
+							"\r",
+							"pm.test(\"Check updated key-Value pair\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData.data.name).to.eql(\"Dona\");\r",
+							"    pm.expect(jsonData.data.salary).to.eql(\"100000\");\r",
+							"     pm.expect(jsonData.data.age).to.eql(\"28\");\r",
+							"\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Dona\",\r\n    \"salary\": \"100000\",\r\n    \"age\": \"28\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://dummy.restapiexample.com/api/v1/update/{{employeeID}}",
+					"protocol": "http",
+					"host": [
+						"dummy",
+						"restapiexample",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"update",
+						"{{employeeID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete an employee record",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Assertion 1 - Status code check\r",
+							"pm.test(\"Status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check delete response key-value pair\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+							"    pm.expect(jsonData.data.toString()).to.eql(pm.environment.get(\"employeeID\").toString());\r",
+							"    pm.expect(jsonData.message).to.eql(\"Successfully! Record has been deleted\");\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://dummy.restapiexample.com/api/v1/delete/{{employeeID}}",
+					"protocol": "http",
+					"host": [
+						"dummy",
+						"restapiexample",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"delete",
+						"{{employeeID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
